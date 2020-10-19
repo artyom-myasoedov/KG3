@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller" />
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <AnchorPane fx:id="innerAnchorPane" layoutX="193.0" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: ffffff;" />
+      <Button fx:id="buttonClear" layoutX="57.0" layoutY="28.0" mnemonicParsing="false" text="Очистить">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="ScaleButton" layoutX="21.0" layoutY="187.0" mnemonicParsing="false" text="Изменить масштаб">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <TextField fx:id="ScaleTextField" layoutX="21.0" layoutY="134.0" prefHeight="38.0" prefWidth="162.0" promptText="Масштаб">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="lightsRadius" layoutX="28.0" layoutY="268.0" promptText="Радиус лучей" text="100" />
+      <TextField fx:id="numberOfLightstextField" layoutX="28.0" layoutY="374.0" promptText="Количество лучей" text="6" />
+      <TextField fx:id="mainRadiusTextField" layoutX="28.0" layoutY="324.0" promptText="Радиус солнца" text="40" />
+      <TextField fx:id="angleTextField" layoutX="28.0" layoutY="427.0" promptText="Начальный угол" text="0" />
+   </children>
+</AnchorPane>

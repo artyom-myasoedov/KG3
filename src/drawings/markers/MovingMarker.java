@@ -15,8 +15,8 @@ public class MovingMarker extends Marker {
 
     @Override
     void setEvent(MouseEvent e) {
-        setPoint(new Point2D(e.getSceneX(), e.getSceneY()));
-        sun.getGroup().setLayoutX(getPoint().getX());
-        sun.getGroup().setLayoutY(getPoint().getY());
+        setPoint(new Point2D(0, 0));
+        sun.getGroup().setLayoutX(e.getSceneX() - 192);
+        sun.getGroup().setLayoutY(e.getSceneY());
     }
 }

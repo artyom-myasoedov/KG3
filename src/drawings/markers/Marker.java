@@ -25,6 +25,8 @@ public abstract class Marker {
 
     public void setPoint(Point2D point) {
         this.point = point;
+        circle.setCenterX(point.getX());
+        circle.setCenterY(point.getY());
     }
 
     public Circle getCircle() {

@@ -7,6 +7,7 @@ import drawings.line.VuLineDrawer;
 import drawings.markers.*;
 import drawings.pixel.RectanglePixelDrawer;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
@@ -14,6 +15,7 @@ import javafx.scene.paint.Color;
 
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,12 +23,12 @@ public class Sun implements IFigure {
     private double startAngle;
     private Pane pane;
     private final int numberOfLights;
-    private final Group group;
+    private Group group;
     private final LineDrawer lineDrawer;
     private final CurveDrawer fillDrawer;
     private final List<Marker> markers;
-    private final Group innerCircleGroup;
-    private final Group innerLightsGroup;
+    private Group innerCircleGroup;
+    private Group innerLightsGroup;
     private boolean isMarkersShows;
 
     public double getStartAngle() {
@@ -45,14 +47,15 @@ public class Sun implements IFigure {
         return pane;
     }
 
-    public Sun(Point2D center, double mainRadius, double lightRadius, double startAngle, int numberOfLights, Pane pane) {
+    public Sun(Point2D center, double mainRadius, double lightRadius, double startAngle, int numberOfLights, Pane pane, Deque<Sun> suns) {
         this.startAngle = startAngle;
         this.numberOfLights = numberOfLights;
         this.pane = pane;
-        Color color = Color.YELLOW;
         group = new Group();
         innerCircleGroup = new Group();
         innerLightsGroup = new Group();
+
+        Color color = Color.YELLOW;
         markers = new ArrayList<>();
         lineDrawer = new VuLineDrawer(new RectanglePixelDrawer(1), innerLightsGroup);
         fillDrawer = new FillOvalDrawer(new RectanglePixelDrawer(1), innerCircleGroup);
@@ -61,7 +64,7 @@ public class Sun implements IFigure {
         markers.add(new ScalingCircleMarker(new Point2D(mainRadius, 0), this));
         markers.add(new ScalingLightsMarker(new Point2D(lightRadius * Math.cos(startAngle), lightRadius * -Math.sin(startAngle)), this));
         markers.add( new AngleChangingMarker(new Point2D(lightRadius * 1.2 * Math.cos(startAngle), -lightRadius * 1.2 * Math.sin(startAngle)), this));
-        markers.add(new DeleteMarker(new Point2D(-mainRadius / 2, 0), this));
+        markers.add(new DeleteMarker(new Point2D(-mainRadius / 2, 0), this, suns));
 
         lineDrawer.setColor(color);
         fillDrawer.setColor(color);
@@ -78,6 +81,7 @@ public class Sun implements IFigure {
                 isMarkersShows = false;
             }
         });
+        group.setCursor(Cursor.HAND);
     }
 
     @Override
@@ -101,6 +105,12 @@ public class Sun implements IFigure {
             lineDrawer.draw(0, 0, lightRadius * cos, lightRadius * sin);
             lineDrawer.draw(1, 0, lightRadius * cos + 1, lightRadius * sin);
         }
+    }
+
+    public void redraw() {
+        clearFigure();
+        drawLights();
+        drawCircle();
     }
 
     @Override

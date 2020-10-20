@@ -67,6 +67,8 @@ public class Controller {
             cp.clear();
             cp.setScale(100 * scale);
             cp.draw();
+            double sc = list.getFirst().getScale() > scale ? 1 / list.getFirst().getScale() : list.getFirst().getScale();
+            list.forEach(x -> x.setPosition(new Point2D(x.getPosition().getX() * sc, x.getPosition().getY() * sc)));
             list.forEach(x -> x.setScale(scale));
             list.forEach(Sun::redraw);
         });
@@ -101,8 +103,8 @@ public class Controller {
                 cp.setCenter(new Point2D(cpX[0] + e.getSceneX() - 192 - x[0], cpY[0] + e.getSceneY() - y[0]));
                 cp.translate();
                 list.forEach(sun -> {
-                    sun.getGroup().setLayoutX(cp.getCenter().getX() + sun.getPosition().getX());
-                    sun.getGroup().setLayoutY(cp.getCenter().getY() + sun.getPosition().getY());
+                    sun.getGroup().setLayoutX(cp.getCenter().getX() + sun.getPosition().getX() * sun.getScale());
+                    sun.getGroup().setLayoutY(cp.getCenter().getY() + sun.getPosition().getY() * sun.getScale());
                 });
             }
         });

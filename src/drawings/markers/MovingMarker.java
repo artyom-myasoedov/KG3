@@ -28,7 +28,7 @@ public class MovingMarker extends Marker {
     @Override
     void setEvent(MouseEvent e) {
         setPoint(new Point2D(0, 0));
-        sun.setPosition(new Point2D(oldPosX + e.getSceneX() - oldX, oldPosY + e.getSceneY() - oldY));
+        sun.setPosition(new Point2D(oldPosX * sun.getScale() + e.getSceneX() - oldX, oldPosY * sun.getScale() + e.getSceneY() - oldY));
         sun.getGroup().setLayoutX(sun.getCp().getCenter().getX() + sun.getPosition().getX());
         sun.getGroup().setLayoutY(sun.getCp().getCenter().getY() + sun.getPosition().getY());
     }

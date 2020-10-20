@@ -6,17 +6,30 @@ import javafx.scene.input.MouseEvent;
 
 
 public class MovingMarker extends Marker {
+    private double oldX;
+    private double oldY;
+    private double oldPosX;
+    private double oldPosY;
+
 
     public MovingMarker(Point2D point, Sun sun) {
         super(point, sun);
         circle = createCircle(Point2D.ZERO);
         setOnMouseEvent();
+        circle.setOnMousePressed(e -> {
+            oldX = e.getSceneX();
+            oldY = e.getSceneY();
+            oldPosX = sun.getPosition().getX();
+            oldPosY = sun.getPosition().getY();
+
+        });
     }
 
     @Override
     void setEvent(MouseEvent e) {
         setPoint(new Point2D(0, 0));
-        sun.getGroup().setLayoutX(e.getSceneX() - 192);
-        sun.getGroup().setLayoutY(e.getSceneY());
+        sun.setPosition(new Point2D(oldPosX + e.getSceneX() - oldX, oldPosY + e.getSceneY() - oldY));
+        sun.getGroup().setLayoutX(sun.getCp().getCenter().getX() + sun.getPosition().getX());
+        sun.getGroup().setLayoutY(sun.getCp().getCenter().getY() + sun.getPosition().getY());
     }
 }

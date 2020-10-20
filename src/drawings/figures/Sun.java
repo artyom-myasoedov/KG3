@@ -1,5 +1,6 @@
 package drawings.figures;
 
+import drawings.CoordinatePlane;
 import drawings.curves.CurveDrawer;
 import drawings.fill.FillOvalDrawer;
 import drawings.line.LineDrawer;
@@ -30,6 +31,11 @@ public class Sun implements IFigure {
     private Group innerCircleGroup;
     private Group innerLightsGroup;
     private boolean isMarkersShows;
+    private CoordinatePlane cp;
+    private Point2D position;
+
+
+    private double scale;
 
     public double getStartAngle() {
         return startAngle;
@@ -47,13 +53,36 @@ public class Sun implements IFigure {
         return pane;
     }
 
-    public Sun(Point2D center, double mainRadius, double lightRadius, double startAngle, int numberOfLights, Pane pane, Deque<Sun> suns) {
+    public double getScale() {
+        return scale;
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
+
+    public CoordinatePlane getCp() {
+        return cp;
+    }
+
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point2D position) {
+        this.position = position;
+    }
+
+    public Sun(Point2D center, double mainRadius, double lightRadius, double startAngle, int numberOfLights, Pane pane, Deque<Sun> suns, CoordinatePlane cp, double scale) {
         this.startAngle = startAngle;
         this.numberOfLights = numberOfLights;
         this.pane = pane;
+        this.cp = cp;
         group = new Group();
         innerCircleGroup = new Group();
         innerLightsGroup = new Group();
+        this.scale = scale;
+        position = new Point2D(center.getX() / scale, center.getY() / scale);
 
         Color color = Color.YELLOW;
         markers = new ArrayList<>();
@@ -88,13 +117,13 @@ public class Sun implements IFigure {
     public void draw() {
         drawCircle();
         drawLights();
-        group.setLayoutX(markers.get(0).getPoint().getX());
-        group.setLayoutY(markers.get(0).getPoint().getY());
+        group.setLayoutX(position.getX() * scale + cp.getCenter().getX());
+        group.setLayoutY(position.getY() * scale + cp.getCenter().getY());
     }
 
     public void drawCircle() {
         int radius = (int) Math.abs(markers.get(1).getPoint().getX());
-        fillDrawer.draw(0, 0, radius, radius);
+        fillDrawer.draw(0, 0, radius * scale, radius * scale);
     }
 
     public void drawLights() {
@@ -102,8 +131,8 @@ public class Sun implements IFigure {
         for (int i = 0; i < numberOfLights; i++) {
             double cos = Math.cos(startAngle - i * 2 * Math.PI / numberOfLights),
                     sin = -Math.sin(startAngle - i * 2 * Math.PI / numberOfLights);
-            lineDrawer.draw(0, 0, lightRadius * cos, lightRadius * sin);
-            lineDrawer.draw(1, 0, lightRadius * cos + 1, lightRadius * sin);
+            lineDrawer.draw(0, 0, lightRadius * cos * scale, lightRadius * sin * scale);
+            lineDrawer.draw(1, 0, lightRadius * cos * scale + 1, lightRadius * sin * scale);
         }
     }
 
@@ -111,6 +140,8 @@ public class Sun implements IFigure {
         clearFigure();
         drawLights();
         drawCircle();
+        group.setLayoutX(position.getX() * scale + cp.getCenter().getX());
+        group.setLayoutY(position.getY() * scale + cp.getCenter().getY());
     }
 
     @Override
